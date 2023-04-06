@@ -1,1 +1,58 @@
 
+
+pipeline {
+      agent any
+      stages {
+      
+          stage('Stage 1') {
+            steps {
+              echo "22050023 STG1: Push change to production web server?"
+              input()
+            }
+          }
+          
+          stage('Stage 2') {
+            steps {
+               sh '''#!/bin/bash
+                 puppet resource file /tmp/22050023/clone ensure=absent force=true;
+                 puppet resource file /tmp/22050023/clone ensure=directory;
+                 cd /tmp/22050023/clone;
+                 git clone https://github.com/KyawRP/22050023_repo.git;
+                 targets=22050023-websvr;
+                 locate_script='/tmp/22050023/clone/22050023_repo/22050023_script';
+                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
+                 '''
+                 echo "22050023 STG2 - Push to production web server completed"
+            }
+          }
+          
+          stage('Stage 3') {
+            steps {
+                    echo "22050023 STG3: Proceed to test production web service?"
+                    input()
+            }
+          }
+          
+          stage('Stage 4') {
+            steps {
+              sh '''#!/bin/bash
+              curl –Is http://22050023-websvr.localdomain |head –n 1  > /tmp/web-test-result
+              '''
+              echo "STG4: Production web server testing completed'
+            }
+          }
+          
+          stage('Stage 5') {
+            steps {
+                   echo "22050023 STG5: Web server testing result has been inspected"
+                   input()
+            }
+          }
+          
+          stage('Stage 6') {
+            steps {
+              echo "22050023 STG6: Production Operation is successful."
+            }
+          }
+      }
+}
