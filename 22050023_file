@@ -20,7 +20,7 @@ pipeline {
                  git clone https://github.com/KyawRP/22050023_repo.git;
                  targets=22050023-websvr;
                  locate_script='/tmp/22050023/clone/22050023_repo/22050023_script';
-                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
+                 bolt script run $locate_script -t $targets --no-host-key-check --run-as root;
                  '''
                  echo "22050023 STG2 - Push to production web server completed"
             }
