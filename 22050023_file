@@ -38,7 +38,7 @@ pipeline {
               sh '''#!/bin/bash
               curl –Is http://22050023-websvr.localdomain |head –n 1  > /tmp/web-test-result
               '''
-              echo "STG4: Production web server testing completed'
+              echo "22050023 STG4: Production web server testing completed'
             }
           }
           
