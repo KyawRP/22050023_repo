@@ -24,7 +24,7 @@ pipeline {
         stage('22050023 STG2') {
             steps {
 				sh ''' 
-				bolt script run $WORKSPACE/22050023_script -t 22050023-websvr.localdomain -u clientadm -p pass123 --no-host-key-check --run-as root
+				bolt script run $WORKSPACE/22050023_script -t 22050023-websvr.localdomain -u clientadm -p user123 --no-host-key-check --run-as root
 				echo "22050023 STG2 - Push to production web server completed"
 				'''
             }
