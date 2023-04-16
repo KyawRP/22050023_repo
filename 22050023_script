@@ -7,5 +7,5 @@ puppet resource file /tmp ensure=directory
 puppet resource file /tmp/22050023 ensure=directory
 puppet resource file /tmp/22050023/clone ensure=directory
 cd /tmp/22050023/clone
-git clone https://github.com/22050023/22050023_repo.git
+git clone https://github.com/KyawRP/22050023_repo.git
 cp -p /tmp/22050023/clone/22050023_repo/22050023_index.html /var/www/html/index.html
