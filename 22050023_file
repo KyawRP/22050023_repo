@@ -1,1 +1,74 @@
+pipeline {
 
+    agent {
+        node {
+            label 'master'
+        }
+    }
+    options {
+        buildDiscarder logRotator( 
+                    daysToKeepStr: '15', 
+                    numToKeepStr: '10'
+            )
+    }
+    stages {
+		
+		stage("22050023 STG1") {
+            input {
+                message "22050023 STG1:Push change to production web server?"
+                ok "Proceed"
+            }
+            steps {
+                echo "Proceeding"
+            }
+        }
+        
+        stage('22050023 STG2') {
+            steps {
+				sh ''' 
+				bolt script run $WORKSPACE/22050023_script -t 22050023-websvr.localdomain -u clientadm -p pass123 --no-host-key-check --run-as root
+				echo "22050023 STG2 - Push to production web server completed"
+				'''
+            }
+        }
+		
+		stage("22050023 STG3") {
+            input {
+                message "22050023 STG3:Proceed to test production web server?"
+                ok "Proceed"
+            }
+            steps {
+                echo "Proceeding"
+            }
+        }
+		
+		stage('22050023 STG4') {
+            steps {
+				sh ''' 
+				curl -Is http://22050023-websvr.localdomain | head -n 1 > /tmp/web-test-result
+				cat /tmp/web-test-result
+				echo "STG4: Production wev server testing completed"
+				'''
+            }
+        }
+		
+		stage("22050023 STG5") {
+            input {
+                message "22050023 STG5: Web server testing result has been inspected"
+                ok "Proceed"
+            }
+            steps {
+                echo "Proceeding"
+            }
+        }
+		
+		stage('22050023 STG6') {
+            steps {
+				sh ''' 
+				echo "STG6:Production Operation is successful"
+				'''
+            }
+        }
+		
+    }
+}
